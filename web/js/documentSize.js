@@ -1,9 +1,9 @@
 /**
- * web/js/.js
+ * web/js/documentSize.js
  * Créé par firekey le 23/06/2017.
  */
 
-$(function () {
+$(function(){
 
     /* ========================= ACTIONS POST-LOAD ========================= */
 
@@ -28,6 +28,5 @@ $(function () {
             $(this).css('min-height', $('.container-fluid').height()+$('.navbar-fixed-top').height() + 30);
         });
     }
-
 
 });

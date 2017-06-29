@@ -26,8 +26,6 @@ $(function(){
     });
 
 
-
-
     /* ========================= FONCTIONS ========================= */
 
     function redimensionner(elmts){

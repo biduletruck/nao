@@ -3,12 +3,11 @@
  * Créé par firekey le 24/06/2017.
  */
 
-$(function () {
+$(function(){
 
     /* ========================= ACTIONS POST-LOAD ========================= */
 
     $('.btn-nav').removeClass('active');
     $('#btn-nav-cpt').addClass('active');
-
 
 });

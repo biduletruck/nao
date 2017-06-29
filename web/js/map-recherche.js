@@ -4,6 +4,7 @@
  */
 
 $(function(){
+
     /* ========================= VARIABLES ========================= */
 
     var carte;
@@ -11,17 +12,17 @@ $(function(){
     var marqueursTab = [];
     var marqueurPosition = [0];
     var iconPosition = L.icon({
-        iconUrl: '../../web/imgs/icon-position@4x.png',
+        iconUrl: document.location.href + '/../../imgs/icon-position@4x.png',
         iconSize: [32, 32],
         iconAnchor: [16, 16]
     });
     var iconProtegee = L.icon({
-        iconUrl: '../../web/imgs/icon-espece-protegee.png',
+        iconUrl: document.location.href + '/../../imgs/icon-espece-protegee.png',
         iconSize: [22.5, 32],
         iconAnchor: [11.25, 16]
     });
     var iconNonProtegee = L.icon({
-        iconUrl: '../../web/imgs/icon-espece-non-protegee.png',
+        iconUrl: document.location.href + '/../../imgs/icon-espece-non-protegee.png',
         iconSize: [22.5, 32],
         iconAnchor: [11.25, 16]
     });
@@ -34,9 +35,7 @@ $(function(){
 
     carte = L.map('carte-rechercher').setView([46.785575, 2.355276], 5);
 
-    L.tileLayer('https://api.mapbox.com/styles/v1/julobrsd/cj2x40f2z001p2rod8xkal2c9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoianVsb2Jyc2QiLCJhIjoiY2oyeDNwMW5nMDB4ODM4cHV4ZWkwMjk0YSJ9.TworUnb_y8Jf5blBUVuRxQ',
-        {attribution: '<span class="pin-glacial gras">Nos Amis les Oiseaux | Ex-Nihilo</span>', maxZoom: 18}
-    ).addTo(carte);
+    L.tileLayer('https://api.mapbox.com/styles/v1/julobrsd/cj2x40f2z001p2rod8xkal2c9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoianVsb2Jyc2QiLCJhIjoiY2oyeDNwMW5nMDB4ODM4cHV4ZWkwMjk0YSJ9.TworUnb_y8Jf5blBUVuRxQ', {attribution: '<span class="pin-glacial gras">Nos Amis les Oiseaux | Ex-Nihilo</span>', maxZoom: 18}).addTo(carte);
 
     if (navigator.geolocation){
         navigator.geolocation.watchPosition(
@@ -46,10 +45,7 @@ $(function(){
                         carte.removeLayer(marqueurPosition[i]);
                     }
                 }
-                var geoPosition = L.marker([position.coords.latitude, position.coords.longitude], {icon: iconPosition})
-                    .bindPopup('<div class="text-center pin-glacial">Vous êtes<br>localisé(e)<br>ici.</div>')
-                    .openPopup()
-                    .addTo(carte);
+                var geoPosition = L.marker([position.coords.latitude, position.coords.longitude], {icon: iconPosition}).bindPopup('<div class="text-center pin-glacial">Vous êtes<br>localisé(e)<br>ici.</div>').openPopup().addTo(carte);
                 marqueurPosition.push(geoPosition);
             },
             function(erreur){
@@ -89,8 +85,10 @@ $(function(){
         redimensionner($('.container-fluid, #div-carte, #carte-rechercher'));
     });
 
-    $('#select-recherche-home-2').on('change', function(){
-        afficherOiseaux($(this).val());
+    $('#select-recherche-home-2').on({
+        change: function(){
+            afficherOiseaux($(this).val());
+        }
     });
 
 
@@ -117,7 +115,7 @@ $(function(){
                     var jour = observation.date.date.substr(8, 2);
                     var mois = observation.date.date.substr(5, 2);
                     var annee = observation.date.date.substr(0, 4);
-                    if (observation.typeEspece.substr(0, 3) == 'non'){
+                    if (observation.typeEspece != null && observation.typeEspece.substr(0, 3) == 'non'){
                         icone = iconNonProtegee;
                     } else {
                         icone = iconProtegee;
@@ -125,14 +123,15 @@ $(function(){
                     if (observation.typeEspece.substr(0, 3) == 'non' || $('#protection-especes').val() == '0'){
                         var marqueur = L.marker([observation.latitude, observation.longitude], {icon: icone});
                         marqueursTab.push(marqueur);
-                        marqueur.bindPopup(
-                            '<div class="text-center pin-glacial">'+
-                            '<img src="../../web/img_upload/'+observation.image+'" width="100px" height="100px"><br>'+
-                            observation.espece.nomVern+'<br>'+
-                            '('+observation.espece.lbNom+')<br>'+
-                            'vu le '+jour+'-'+mois+'-'+annee+'<br>'+
-                            '</div>'
-                        )
+                        marqueur
+                            .bindPopup(
+                                '<div class="text-center pin-glacial">'+
+                                    '<img src="../../web/img_upload/'+observation.image+'" width="100px" height="100px"><br>'+
+                                    observation.espece.nomVern+'<br>'+
+                                    '('+observation.espece.lbNom+')<br>'+
+                                    'vu le '+jour+'-'+mois+'-'+annee+'<br>'+
+                                '</div>'
+                            )
                             .openPopup()
                             .addTo(carte);
                     }
